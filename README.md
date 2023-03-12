@@ -1,3 +1,43 @@
-# websocket-template
+# js13k-cloudflare-websocket-example
 
-A simple template for working with WebSockets in Cloudflare Workers. [Check out the announcement blog post to learn more.](https://blog.cloudflare.com/introducing-websockets-in-workers/)
+Example app that demonstrates:
+
+- Cloudflare Workers
+- Cloudflare Wrangler
+- Cloudflare Durable Object
+
+## Setup
+
+1. Clone the repo
+
+```bash
+git clone ...
+```
+
+2. Install dependencies
+
+```bash
+npm ci
+```
+
+3. Update `wrangler.toml` with your Cloudflare account ID
+
+4. Authenticate Wrangler with your Cloudflare account
+
+```bash
+npx wrangler login
+```
+
+5. Start the Wrangler dev server
+
+```bash
+npx wrangler dev
+```
+
+## References
+
+https://github.com/cloudflare/workers-chat-demo
+
+## License
+
+MIT

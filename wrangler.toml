@@ -1,6 +1,18 @@
-name = "websocket-template"
-type = "webpack"
-account_id = "b54f07a6c269ecca2fa60f1ae4920c99"
+name = "js13k-cloudflare-websocket-example"
+main = "src/index.mjs"
+compatibility_date = "2023-03-12"
 workers_dev = true
-route = ""
-zone_id = ""
+
+[[rules]]
+type = "Data"
+globs = ["**/*.html"]
+fallthrough = false
+
+[durable_objects]
+bindings = [
+  { name = "servers", class_name = "GameServer" }
+]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["GameServer"]

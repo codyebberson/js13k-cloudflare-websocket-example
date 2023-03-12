@@ -1,16 +1,20 @@
 {
-  "private": true,
-  "name": "websocket-template",
+  "name": "js13k-cloudflare-websocket-example",
   "version": "1.0.0",
-  "description": "A template for kick starting a Cloudflare Workers project",
-  "main": "index.js",
+  "description": "Example js13k server game using Cloudflare Workers",
+  "author": "Cody Ebberson <cody@ebberson.com>",
+  "license": "MIT",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write '**/*.{js,css,json,md}'"
   },
-  "author": "Kristian Freeman <kristian@kristianfreeman.com>",
-  "license": "MIT",
   "devDependencies": {
-    "prettier": "^1.18.2"
+    "prettier": "^2.8.4",
+    "wrangler": "^2.12.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 100
   }
 }

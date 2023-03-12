@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas></canvas>
+  </body>
+  <script>
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const player = { x: 100, y: 100 };
+    const target = { x: 100, y: 100 };
+    let frame = 0;
+    let serverState = undefined;
+
+    function step() {
+      update();
+      draw();
+      requestAnimationFrame(step);
+    }
+    step();
+
+    function update() {
+      if (player.x < target.x) player.x++;
+      if (player.x > target.x) player.x--;
+      if (player.y < target.y) player.y++;
+      if (player.y > target.y) player.y--;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'red';
+      ctx.strokeRect(player.x - 5, player.y - 5, 10, 10);
+
+      ctx.fillStyle = 'blue';
+      ctx.fillText('frame = ' + frame, 0, 20);
+
+      if (serverState) {
+        ctx.fillStyle = 'green';
+        ctx.fillText('serverState = ' + serverState, 0, 40);
+
+        for (const p of serverState.players) {
+          ctx.strokeRect(p.x - 5, p.y - 5, 10, 10);
+        }
+      }
+
+      frame++;
+    }
+
+    canvas.addEventListener('click', (e) => {
+      target.x = e.offsetX;
+      target.y = e.offsetY;
+    });
+
+    const url = new URL(window.location);
+    url.protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
+    url.pathname = '/ws';
+
+    const ws = new WebSocket(url);
+
+    ws.addEventListener('open', () => {
+      console.log('Opened websocket');
+      ws.send(JSON.stringify(player));
+    });
+
+    ws.addEventListener('message', ({ data }) => {
+      serverState = JSON.parse(data);
+      ws.send(JSON.stringify(player));
+    });
+
+    ws.addEventListener('close', () => {
+      console.log('Closed websocket');
+    });
+  </script>
+</html>
