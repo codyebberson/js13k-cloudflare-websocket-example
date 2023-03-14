@@ -27,7 +27,7 @@ export default {
 
 /**
  * The GameServer class is a Cloudflare Durable Object that handles a single game session.
- * In this example, there is only one game session, but in a real game there would be many.
+ * In this example, there is only one game session, but in a real game there could be many.
  */
 export class GameServer {
   constructor(controller, env) {
@@ -53,11 +53,19 @@ export class GameServer {
     return new Response(null, { status: 101, webSocket: client });
   }
 
+  /**
+   * Handles a websocket connection.
+   * This function is called once for each websocket connection.
+   * @param websocket The websocket connection to the client.
+   */
   async handleSession(websocket) {
+    // Generate a random ID for this player.
     const id = crypto.randomUUID();
 
+    // Accept the websocket connection.
     websocket.accept();
 
+    // On every message, update the player's location and send a copy of the server state.
     websocket.addEventListener('message', async ({ data }) => {
       let player = this.state.players.find((p) => p.id === id);
       if (!player) {
@@ -72,6 +80,7 @@ export class GameServer {
       websocket.send(JSON.stringify({ ...this.state, me: id }));
     });
 
+    // When the websocket closes, remove the player from the game.
     websocket.addEventListener('close', async (evt) => {
       this.state.players = this.state.players.filter((p) => p.id !== id);
     });
