@@ -1,5 +1,7 @@
 # js13k-cloudflare-websocket-example
 
+Try it! https://js13k-cloudflare-websocket-example.codyebberson.workers.dev/
+
 Example app that demonstrates:
 
 - Cloudflare Workers
