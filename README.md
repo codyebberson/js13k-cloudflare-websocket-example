@@ -6,6 +6,33 @@ Example app that demonstrates:
 - Cloudflare Wrangler
 - Cloudflare Durable Object
 
+## Why?
+
+[js13kGames](https://js13kgames.com/) is an annual game jam focused on creating browser games that are under 13 kilobytes.
+
+The competition has a "server" category for multiplayer games. While single player games can use simple static file hosting, multiplayer games require a persistent server for stateful connections using [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API).
+
+Historically, server games ran on Heroku thanks to Heroku's generous free tier. However, as of November 28, 2022, [Heroku discontinued free product plans](https://blog.heroku.com/next-chapter). Therefore, the server category needs a new hosting option.
+
+While there are many hosting providers, there are not many that meet the js13kGames requirements:
+
+- Free
+- Supports server side runtime
+- Supports WebSockets
+
+This project is a proof-of-concept of a js13kGames-style server game running on Cloudflare Workers. Cloudflare requires a credit card on file, but the free tier includes:
+
+- Workers
+  - 100k requests per day
+- Durable Objects
+  - 400,000 GB-second duration
+  - 1 GB of stored data
+  - 1 million read units
+  - 1 million write units
+  - 1 million delete operations
+
+This is not an advertisement for Cloudflare. This is a proof-of-concept to test feasibility.
+
 ## Localhost
 
 1. Clone the repo
@@ -64,7 +91,8 @@ If so, follow the link, enable Durable Objects, and try again.
 
 ## References
 
-https://github.com/cloudflare/workers-chat-demo
+- https://github.com/cloudflare/websocket-template
+- https://github.com/cloudflare/workers-chat-demo
 
 ## License
 
