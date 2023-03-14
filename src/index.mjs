@@ -1,7 +1,5 @@
 import HTML from './index.html';
 
-let serverId = undefined;
-
 // Main request handler
 // By Cloudflare convention, the default export is the main request handler.
 // For root requests, returns the default HTML page
@@ -15,10 +13,7 @@ export default {
         case '/':
           return new Response(HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
         case '/ws':
-          if (!serverId) {
-            serverId = env.servers.newUniqueId();
-          }
-          return env.servers.get(serverId).fetch(request, env);
+          return env.servers.get(env.servers.idFromName('x')).fetch(request, env);
         default:
           return new Response('Not found', { status: 404 });
       }
@@ -37,7 +32,6 @@ export class GameServer {
     this.storage = controller.storage;
     this.env = env;
     this.state = { time: 0, players: [] };
-
     setInterval(() => this.state.time++, 30);
   }
 
@@ -77,7 +71,7 @@ export class GameServer {
     });
 
     websocket.addEventListener('close', async (evt) => {
-      console.log(evt);
+      this.state.players = this.state.players.filter((p) => p.id !== id);
     });
   }
 }

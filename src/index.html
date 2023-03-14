@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Websocket Example</title>
+    <style>
+      #c {
+        width: 100vw;
+        outline: 0;
+        image-rendering: pixelated;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+    </style>
+  </head>
   <body>
-    <canvas></canvas>
+    <canvas id="c" width="640" height="360"></canvas>
   </body>
   <script>
     const canvas = document.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false });
     const player = { x: 100, y: 100 };
     const target = { x: 100, y: 100 };
     let frame = 0;
@@ -28,27 +49,50 @@
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = 'red';
-      ctx.strokeRect(player.x - 5, player.y - 5, 10, 10);
-
-      ctx.fillStyle = 'blue';
-      ctx.fillText('frame = ' + frame, 0, 20);
+      ctx.fillStyle = '#333';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       if (serverState) {
         ctx.fillStyle = 'green';
-        ctx.fillText('serverState = ' + serverState, 0, 40);
+        ctx.fillText('Status: connected', 5, 15);
+        ctx.fillText('Players: ' + serverState.players?.length, 5, 30);
+
+        ctx.fillStyle = 'yellow';
+        ctx.fillText('You are yellow', 5, 305);
+
+        ctx.fillStyle = '#888';
+        ctx.fillText('Your server state is gray', 5, 320);
+
+        ctx.fillStyle = '#f0f';
+        ctx.fillText('Other players are pink', 5, 335);
+
+        ctx.fillStyle = 'white';
+        ctx.fillText('Click to move', 5, 350);
 
         for (const p of serverState.players) {
+          if (p.id === serverState.me) {
+            ctx.strokeStyle = '#888';
+          } else {
+            ctx.strokeStyle = '#f0f';
+          }
+          ctx.lineWidth = 2;
           ctx.strokeRect(p.x - 5, p.y - 5, 10, 10);
         }
+      } else {
+        ctx.fillStyle = 'red';
+        ctx.fillText('Status: connecting...', 5, 15);
       }
+
+      ctx.strokeStyle = 'yellow';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(player.x - 5, player.y - 5, 10, 10);
 
       frame++;
     }
 
     canvas.addEventListener('click', (e) => {
-      target.x = e.offsetX;
-      target.y = e.offsetY;
+      target.x = (canvas.width * e.offsetX) / canvas.clientWidth;
+      target.y = (canvas.height * e.offsetY) / canvas.clientHeight;
     });
 
     const url = new URL(window.location);
