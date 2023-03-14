@@ -13,6 +13,8 @@ export default {
         case '/':
           return new Response(HTML, { headers: { 'Content-Type': 'text/html;charset=UTF-8' } });
         case '/ws':
+          // idFromName will always return the same ID for the same name.
+          // This means that all requests to /ws will be routed to the same GameServer object.
           return env.servers.get(env.servers.idFromName('x')).fetch(request, env);
         default:
           return new Response('Not found', { status: 404 });

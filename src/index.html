@@ -96,7 +96,7 @@
     });
 
     const url = new URL(window.location);
-    url.protocol = window.location.protocol === 'https' ? 'wss' : 'ws';
+    url.protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
     url.pathname = '/ws';
 
     const ws = new WebSocket(url);
